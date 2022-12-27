@@ -1,5 +1,6 @@
 # SpanElectra
-New and Public repo to train spanELectra. SpanElectra uses 
+New and Public repo to train spanELectra. SpanElectra is a compute optimized span level Language model for pre training and fine tuning tasks. Instead of training a model that generate tokens, we train a discriminative model that predicts whether each token in the corrupted input was replaced by a generator sample or not. 
+ 
 
 ## Tokenization and Vocab Creation
 `create_vocab_SE.py` will create a Vocabulary file based on the type of tokenizer we choose on given text Data. `the following class contains all arguments needed to develop vocabulary.
