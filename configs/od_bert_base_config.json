@@ -1,0 +1,20 @@
+{
+    "pad_token": "[PAD]",
+    "mask_token": "[MASK]",
+    "lowercase": true,
+    "pad_token_id": 0,
+    "mask_id": 3,
+    "dummy_id": 0,
+    "ignore_label": 2,
+
+    "embedding_size": 768,
+    "disc_hidden_size": 768,
+    "max_span_len": 15,
+    "mask_ratio": 0.2,
+    "vocab_size": 30522,
+    "max_seq_len": 512,
+    "gen_hidden_size": 128,
+    "use_SBPO": true,
+    "use_SBGO": false
+
+}
