@@ -1,7 +1,38 @@
 # SpanElectra
-New and Public repo to train spanELectra. SpanElectra is a compute optimized span level Language model for pre training and fine tuning tasks. Instead of training a model that generate tokens, we train a discriminative model that predicts whether each token in the corrupted input was replaced by a generator sample or not. 
+SpanElectra is a compute optimized span level Language model for pre training and fine tuning tasks. Instead of training a model that generate tokens, we train a discriminative model that predicts whether each token in the corrupted input was replaced by a generator sample or not. It has two parts: 
 
 ![alt text](https://github.com/ad6398/SpanElectra/blob/main/assets/se-arch.png?raw=true)
+
+## Generator:
+* It is a small span level MLM model like spanBERT.
+* Span Boundary Generative Objective (SBGO):
+   * Jack		[mask_1]		[mask_2] 		[mask_3] 		hill
+     * token1  =  function( rep(Jack),  rep( hill), pos(mask_1) )
+     * token2  =  function( rep(Jack),  rep( hill), pos(mask_2) )
+
+     rep = representation function of tokens in MLM
+     
+     pos= position of token wrt start of span or positional embedding
+     
+## Discriminator:
+* Span Boundary Predictive Objective(SBPO):
+  * Jack 		go 		at 		the 	hill
+    
+    is_replaced(go) = function( rep(Jack), rep(hill), pos(go) )
+
+* Electra Objective/ all token objective (ATO):
+  * predict whether each token present in sentence is replaced/corrupted or not.
+  * Jack 		go 		at 		the 	hill
+    
+    is_replaced(Jack) = function( rep(whole_sentence ))
+
+
+### Why SpanElectra?
+* **More accurate:** Shifting from token level to span level produced better result as evident from the spanBERT paper. For both generative and predictive part,  we have span level objective (SBGO and SBPO) as well as token level objective (ATO), clearly promising a better result.
+* **Needs less resources:** Generative models take more time and computing resources than predictive model (easily evident from Electra paper).
+Generative part of spanElectra( i.e. generator) is small in size in comparison to predictive part (Discriminator) and other MLMs like BERT, hence making spanElectra compute and time optimized.
+
+
 
 ## Tokenization and Vocab Creation
 `create_vocab_SE.py` will create a Vocabulary file based on the type of tokenizer we choose on given text Data. `the following class contains all arguments needed to develop vocabulary.
@@ -41,6 +72,3 @@ New and Public repo to train spanELectra. SpanElectra is a compute optimized spa
 
 `trainSpanElectra.py` will train discrimnator model. it will use SE_trainDataArgs (to create training features), SE_validDataArgs (to create validation features), SE_trainingConfig (args to train spanElectra model).
 
-### matrices and loss
-loss-> cross entropy
-accu -> flat accu
